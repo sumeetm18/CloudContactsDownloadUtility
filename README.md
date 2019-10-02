@@ -52,7 +52,7 @@ Exports all contacts of the user to ContactExport.csv in Downloads Folder:
 
 # Upcoming Enhancements
 
-- Option to specify the cloud storage.Currently by default the script works for google contacts.
+- Option to specify the cloud storage.Currently script now has only google contacts api download option.
 - Other Operation on Contacts Management like Create,Delete,Update.
 - Currently downloaded csv will have only name and number. With later enhancement we will have all the fields populated.
 - Better Exceptions handling.
