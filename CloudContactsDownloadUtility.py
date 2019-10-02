@@ -10,7 +10,7 @@ import re
 import time
 
 
-class ContactUtils():
+class CloudContactManager():
     '''
     Abstract Class to connect and do the operation on different contact storage utls
     '''
@@ -26,7 +26,7 @@ class ContactUtils():
         pass
 
 
-class GoogleContactsManager(ContactUtils):
+class GoogleContactsManager(CloudContactManager):
 
     SCOPE = ['http://www.google.com/m8/feeds/contacts/']
 
