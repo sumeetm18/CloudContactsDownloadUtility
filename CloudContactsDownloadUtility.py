@@ -17,14 +17,16 @@ class CloudContactManager():
     __metaclass__  = abc.ABCMeta
 
     def getallcontacts(self):
-        pass
+        raise NotImplementedError()
 
     def connect(self):
-        pass
+        raise NotImplementedError()
 
     def writecontactstocsv(self):
-        pass
+        raise NotImplementedError()
 
+class MicrsoftContactManager(CloudContactManager):
+    pass
 
 class GoogleContactsManager(CloudContactManager):
 
