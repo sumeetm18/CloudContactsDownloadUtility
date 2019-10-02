@@ -1,11 +1,9 @@
 #!/usr/bin/env python
+from GoogleOAuthSignIn import GoogleOAuthSignIn
 import abc
 import gdata.contacts.client
 import gdata.contacts.data
 import gdata.data
-from oauth2client import tools
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.file import Storage
 import re
 import time
 
@@ -19,55 +17,25 @@ class CloudContactManager():
     def getallcontacts(self):
         raise NotImplementedError()
 
-    def connect(self):
-        raise NotImplementedError()
-
     def writecontactstocsv(self):
         raise NotImplementedError()
+
 
 class MicrsoftContactManager(CloudContactManager):
     pass
 
-class GoogleContactsManager(CloudContactManager):
 
-    SCOPE = ['http://www.google.com/m8/feeds/contacts/']
+class GoogleContactsManager(CloudContactManager):
 
     def __init__(self, contacts_client):
         """Creates a contact manager for the contact list of a user.
-
         Args:
           contacts_client: The gdata.contacts.client.ContactsService instance to
             use to perform GData calls.
         """
         self.contacts_client = contacts_client
 
-    @classmethod
-    def connect(cls):
-        flow = flow_from_clientsecrets(
-            filename='config/client_secret.json',
-            scope=GoogleContactsManager.SCOPE,
-            message='Please create a project in the Google Developer Console and place the client_secret.json '
-                    'authorization file along this script'
-        )
-        storage = Storage('config/credentials.json')
-        credentials = storage.get()
-        if credentials is None:
-            credentials = tools.run_flow(flow, storage, tools.argparser.parse_args([]))
-        # GData with access token
-        token = gdata.gauth.OAuth2Token(
-            client_id=flow.client_id,
-            client_secret=flow.client_secret,
-            scope=GoogleContactsManager.SCOPE,
-            user_agent=flow.user_agent,
-            access_token=credentials.access_token,
-            refresh_token=credentials.refresh_token)
-
-        # Construct the Contacts service and authenticate
-        contacts_client = gdata.contacts.client.ContactsClient(auth_token=token)
-        token.authorize(contacts_client)
-        return contacts_client
-
-    def writecontactstocsv(self,contact_entries):
+    def writecontactstocsv(self , contact_entries):
         """Creates a csv with name and numbers from contact entries passed.
         Args:
         contact_entries: Generator Object of all the gdata.contacts.data.ContactEntries
@@ -119,7 +87,7 @@ class GoogleContactsManager(CloudContactManager):
 
 
 def main():
-    contacts_client = GoogleContactsManager.connect()
+    contacts_client = GoogleOAuthSignIn.connect()
     contacts_manager = GoogleContactsManager(contacts_client)
     contact_entries = contacts_manager.getallcontacts()
     contacts_manager.writecontactstocsv(contact_entries)
