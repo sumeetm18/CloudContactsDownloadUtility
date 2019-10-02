@@ -57,3 +57,4 @@ Exports all contacts of the user to ContactExport.csv in Downloads Folder:
 - Currently downloaded csv will have only name and number. With later enhancement we will have all the fields populated.
 - Better Exceptions handling.
 - Support for  python 3 version.
+- Addition of unit tests for test coverage
